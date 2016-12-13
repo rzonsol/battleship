@@ -1,6 +1,6 @@
 package pl.rzonsol.battelship.board;
 
-import pl.rzonsol.battelship.exeptions.IllegalMoveExeption;
+import pl.rzonsol.battelship.exeptions.IllegalMoveException;
 import pl.rzonsol.battelship.ships.*;
 
 import java.util.Random;
@@ -26,7 +26,7 @@ public class Board {
     public Board(){
         for (int y = 0; y < BOARD_SIZE; y++) {
             for (int x = 0; x < BOARD_SIZE; x++) {
-                fields[y][x]= new Field(x,y,State.EMPTY);
+                fields[x][y]= new Field(x,y,State.EMPTY);
             }
         }
     }
@@ -38,7 +38,7 @@ public class Board {
         for (int x = 0; x < BOARD_SIZE; x++) {
             for (int y = 0; y < BOARD_SIZE; y++) {
                 if(getField(x,y).getState()==State.SHIP){
-                    fields[y][x].setState(State.USER_SHIP);
+                    fields[x][y].setState(State.USER_SHIP);
                 }
             }
 
@@ -87,7 +87,7 @@ public class Board {
                     try {
                         addShip(x,y,ship);
                         tryAgain=false;
-                    } catch (IllegalMoveExeption illegalMoveExeption) {
+                    } catch (IllegalMoveException illegalMoveExeption) {
                         illegalMoveExeption.printStackTrace();
                         tryAgain=true;
                     }
@@ -125,14 +125,14 @@ public class Board {
     /**
      * addShip() - put ship on the board, method take 3 parameters (x,y)- coordinate of the first deck and ship with orientation
      */
-    public void addShip(int x,int y, Ship ship)  throws IllegalMoveExeption {
+    public void addShip(int x,int y, Ship ship)  throws IllegalMoveException {
 
         int count = ship.getDecksCount();
         Field[] field = new Field[count];
         int xToSet=x,yToSet=y;
 
         if(numberOfShipsByDeck[count -1]==getTotalCountOfShips(count)){
-            throw new IllegalMoveExeption("You have all submarine set!");
+            throw new IllegalMoveException("You have all submarine set!");
         }
 
         for (int i = 0; i < count; i++) {
@@ -144,13 +144,13 @@ public class Board {
             }
 
             if (isOutside(xToSet, yToSet)) {
-                throw new IllegalMoveExeption("Ship set outside board!");
+                throw new IllegalMoveException("Ship set outside board!");
             }
 
             field[i] = fields[xToSet][yToSet];
 
             if(isFillOccupied(field[i])) {
-                throw new IllegalMoveExeption("Field is occupited!");
+                throw new IllegalMoveException("Field is occupited!");
             }
         }
 
@@ -176,7 +176,7 @@ public class Board {
                     continue;
                 }
 
-                if(fields[y][x].getState() != State.EMPTY){
+                if(fields[x][y].getState() != State.EMPTY){
                     return true;
                 }
             }
@@ -187,7 +187,7 @@ public class Board {
     /**
      * isOutside() checks if the field with cordinate (x,y) is outside the board, if it is outside its return true
      */
-    private boolean isOutside(int x, int y) {
+    public boolean isOutside(int x, int y) {
         return x < 0 || x >= BOARD_SIZE || y < 0 || y >= BOARD_SIZE;
     }
 
@@ -195,15 +195,16 @@ public class Board {
      * shoot(int x,int y) - method is responds for shooting on the board, its changing state of the field on the board
      */
 
-    public void shoot(int x, int y) throws IllegalMoveExeption {
+    public void shoot(int x, int y) throws IllegalMoveException {
+
         if(isOutside(x,y)){
-            throw new IllegalMoveExeption("Don't shoot outside board!");
+            throw new IllegalMoveException("Don't shoot outside board!");
         }
 
         Field field = getField(x, y);
 
         if(field.getState()==State.MISS || field.getState() == State.HIT || field.getState() == State.SUNK){
-            throw new IllegalMoveExeption("You have already shot here!");
+            throw new IllegalMoveException("You have already shot here!");
         }
 
         if(field.getState()==State.EMPTY){
@@ -230,6 +231,14 @@ public class Board {
 
     public Field getField(int x, int y) {
         return fields[x][y];
+    }
+
+    public Field[][] getFields() {
+        return fields;
+    }
+
+    public void setFields(Field field) {
+        this.fields[field.getX()][field.getX()] = field;
     }
 }
 

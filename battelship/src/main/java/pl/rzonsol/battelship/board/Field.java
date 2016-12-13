@@ -57,8 +57,9 @@ public class Field {
             case HIT:
                 return 'O';
             case EMPTY:
-            case SHIP:
                 return ' ';
+            case SHIP:
+                return '?';
             case MISS:
                 return '!';
             case SUNK:

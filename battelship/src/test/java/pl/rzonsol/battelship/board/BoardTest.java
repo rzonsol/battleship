@@ -1,7 +1,7 @@
 package pl.rzonsol.battelship.board;
 
 
-import pl.rzonsol.battelship.exeptions.IllegalMoveExeption;
+import pl.rzonsol.battelship.exeptions.IllegalMoveException;
 import pl.rzonsol.battelship.ships.*;
 import pl.rzonsol.battelship.ships.Submarine;
 import pl.rzonsol.battelship.ships.WarShip;
@@ -14,6 +14,27 @@ import static org.junit.Assert.assertEquals;
  * Created by rzonsol on 09.12.2016.
  */
 public class BoardTest {
+    @Test
+    public void shouldReturnTrueXless0() throws Exception {
+        assertEquals(true,board.isOutside(-1,0));
+    }
+    @Test
+    public void shouldReturnTrueYless0() throws Exception {
+        assertEquals(true,board.isOutside(0,-1));
+    }
+    @Test
+    public void shouldReturnTrueYBigger9() throws Exception {
+        assertEquals(true,board.isOutside(0,10));
+    }
+    @Test
+    public void shouldReturnTrueXBigger9() throws Exception {
+        assertEquals(true,board.isOutside(10,0));
+    }
+    @Test
+    public void shouldReturnFalse() throws Exception {
+        assertEquals(false,board.isOutside(9,0));
+    }
+
 
     private Board board;
 
@@ -32,7 +53,7 @@ public class BoardTest {
         assertEquals(1,board.getShipsCount());
     }
 
-    @Test(expected = IllegalMoveExeption.class)
+    @Test(expected = IllegalMoveException.class)
     public void ShouldNoBeAbleAddFiveSubmarine() throws Exception {
         //arrange
         board.addShip(0,0, new Submarine());
@@ -53,13 +74,13 @@ public class BoardTest {
         assertEquals(State.SHIP, field.getState());
     }
 
-    @Test(expected = IllegalMoveExeption.class)
+    @Test(expected = IllegalMoveException.class)
     public void shouldNotBeAbleToGetOutside() throws Exception {
         //act
         board.addShip(9,1,new Destroyer(WarShip.Orientation.HORIZONTAL));
     }
 
-    @Test(expected = IllegalMoveExeption.class)
+    @Test(expected = IllegalMoveException.class)
     public void shouldNotBeAbleToBeClose() throws Exception {
         //arrange
         board.addShip(0,0,new Destroyer(WarShip.Orientation.HORIZONTAL));
@@ -77,7 +98,7 @@ public class BoardTest {
         assertEquals(State.SHIP, field.getState());
     }
 
-    @Test(expected = IllegalMoveExeption.class)
+    @Test(expected = IllegalMoveException.class)
     public void shouldNotAbleAdeTwoBattleship() throws Exception {
         //arrange
         board.addShip(0,0, new BattleShip(WarShip.Orientation.HORIZONTAL));
@@ -86,14 +107,14 @@ public class BoardTest {
         //
     }
 
-    @Test(expected = IllegalMoveExeption.class)
+    @Test(expected = IllegalMoveException.class)
     public void shouldFailToAddOutsideX() throws Exception {
         // arrange
         //act
         board.addShip(-1,0, new Submarine());
     }
 
-    @Test(expected = IllegalMoveExeption.class)
+    @Test(expected = IllegalMoveException.class)
     public void shouldFailToAddOutsideY() throws Exception {
         // arrange
         //act
@@ -141,7 +162,7 @@ public class BoardTest {
         assertEquals(0,board.getShipsCount());
     }
 
-    @Test(expected = IllegalMoveExeption.class)
+    @Test(expected = IllegalMoveException.class)
     public void shouldNoBeAbleShootTwice() throws Exception {
         //arrange
         board.shoot(0,0);
