@@ -35,7 +35,6 @@ public class MediumIATest {
     public void shouldReturnMiss() throws Exception {
         //arrange
         MediumIA iaLavel =new MediumIA();
-//        board.addShip(1,1,new Submarine());
         // act
         Field field =iaLavel.shootNear(board, 1,1);
 
@@ -101,25 +100,6 @@ public class MediumIATest {
 
     }
 
-    @Test
-    public void shouldReturnSunk() throws Exception {
-        //arrange
-        MediumIA iaLavel =new MediumIA();
-        board.addShip(9,5,new Cruiser(WarShip.Orientation.VERTICAL));
-
-        board.shoot(9,5);
-        int x=9;int y=5;
-        do{
-            Field field = iaLavel.shootNear(board,x,y);
-            if (field.getState()==State.HIT){
-                x=field.getX();
-                y=field.getY();
-            }
-        }while (board.getField(9,5).getState()!=State.SUNK);
-
-        assertEquals(State.SUNK,board.getField(9,5).getState());
-
-    }
 
     @Test
     public void shouldReturnSunkBattleShip() throws Exception {
