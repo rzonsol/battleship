@@ -9,27 +9,26 @@ import pl.rzonsol.battelship.iaplayer.*;
 public class game {
 
     public static void main(String[] args){
-        Board userBoard = new Board();
 
-        Integer gameRound =0;
-        Board board = new Board();
-        board.fillBoard();
-        HardIA pcLevel = new HardIA();
+            Board userBoard = new Board();
 
-        do{
-            System.out.println("Round: " + gameRound);
-            System.out.println("Ships left: "+ board.getShipsCount());
+            Integer gameRound =0;
+            Board board = new Board();
+            board.fillBoard();
+            HardIA pcLevel = new HardIA();
 
-            pcLevel.IaShoot(board);
+            do{
+                System.out.println("Round: " + gameRound);
+                System.out.println("Ships left: "+ board.getShipsCount());
+
+                pcLevel.iaShoot(board);
+                board.printBord();
+                gameRound++;
+            }while (board.getShipsCount() >0);
+
+            System.out.println("Game over!!");
             board.printBord();
-            gameRound++;
-        }while (board.getShipsCount() >0);
 
-
-
-
-        System.out.println("Game over!!");
-        board.printBord();
 
     }
 }

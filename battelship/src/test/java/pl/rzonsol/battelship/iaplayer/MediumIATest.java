@@ -120,4 +120,7 @@ public class MediumIATest {
         assertEquals(State.SUNK,board.getField(9,5).getState());
 
     }
+
+
+
 }
