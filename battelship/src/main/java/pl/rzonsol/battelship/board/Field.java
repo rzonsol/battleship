@@ -57,15 +57,14 @@ public class Field {
             case HIT:
                 return 'O';
             case EMPTY:
-                return ' ';
             case SHIP:
-                return '?';
+                return ' ';
             case MISS:
                 return '!';
             case SUNK:
                 return 'X';
             case USER_SHIP:
-                return '0';
+                return 'U';
             default:
                 return '?';
         }

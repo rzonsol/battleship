@@ -145,7 +145,6 @@ public class HardIATest {
             board.getField(i,8).setState(State.MISS);
         }
         Field field = hardIA.shootNear(board,1,9);
-        board.printBord();
         assertEquals(State.SUNK, field.getState());
     }
 
@@ -155,7 +154,6 @@ public class HardIATest {
         board.addShip(5,5,new Submarine(WarShip.Orientation.HORIZONTAL));
         board.shoot(5,5);
         board = hardIA.ifSunkPutMissAround(board,5,5);
-        board.printBord();
         assertEquals(State.MISS,board.getField(4,5).getState());
         assertEquals(State.MISS,board.getField(6,5).getState());
         assertEquals(State.MISS,board.getField(5,4).getState());
@@ -173,7 +171,10 @@ public class HardIATest {
         board.shoot(0,0);
         board.shoot(1,0);
         board = hardIA.ifSunkPutMissAround(board,1,0);
-        board.printBord();
+        assertEquals(State.MISS,board.getField(0,1).getState());
+        assertEquals(State.MISS,board.getField(1,1).getState());
+        assertEquals(State.MISS,board.getField(2,1).getState());
+        assertEquals(State.MISS,board.getField(2,0).getState());
     }
 
     @Test
@@ -185,7 +186,10 @@ public class HardIATest {
         board.shoot(0,2);
         board.shoot(0,3);
         board = hardIA.ifSunkPutMissAround(board,0,0);
-        board.printBord();
+        for (int i = 0; i < 5; i++) {
+            assertEquals(State.MISS,board.getField(1,i).getState());
+        }
+        assertEquals(State.MISS,board.getField(0,4).getState());
     }
 
     @Test
@@ -197,7 +201,14 @@ public class HardIATest {
         board.shoot(3,5);
         board.shoot(3,6);
         board = hardIA.ifSunkPutMissAround(board,3,3);
-        board.printBord();
+        for (int i = 2; i < 8; i++) {
+            assertEquals(State.MISS,board.getField(2,i).getState());
+        }
+        for (int i = 4; i < 8; i++) {
+            assertEquals(State.MISS,board.getField(2,i).getState());
+        }
+        assertEquals(State.MISS,board.getField(3,2).getState());
+        assertEquals(State.MISS,board.getField(3,7).getState());
     }
 
     @Test

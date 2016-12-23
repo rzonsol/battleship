@@ -10,7 +10,7 @@ import java.util.Random;
  */
 public class EasyIA {
 
-    public Board IaShoot(Board board){
+    public Board iaShoot(Board board){
         Random random = new Random();
         int y=random.nextInt(10);
         int x=random.nextInt(10);
@@ -19,7 +19,7 @@ public class EasyIA {
         } catch (IllegalMoveException illegalMoveExeption) {
             System.out.println("Message: " + illegalMoveExeption.getMessage());
         } finally {
-            System.out.println("You Shot at : "+ (char)('A'+y) +x);
+            System.out.println("Shoot at : "+ (char)('A'+y) +x);
         }
         return board;
     }

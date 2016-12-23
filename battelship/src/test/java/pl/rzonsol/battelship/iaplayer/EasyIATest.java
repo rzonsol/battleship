@@ -23,7 +23,7 @@ public class EasyIATest {
         //arrange
         EasyIA iaLavel =new EasyIA();
         //act
-        assertNotNull(iaLavel.IaShoot(board));
+        assertNotNull(iaLavel.iaShoot(board));
     }
 
 }

@@ -12,40 +12,46 @@ import java.util.Random;
 /**
  * Created by rzonsol on 14.12.2016.
  */
-public class HardIA {
-//    private static Field field =new Field(0,0,State.EMPTY);
+public class HardIA extends Ia{
     private Board board;
-//    private Boolean hitNotSunk=false;
     private static Field lastField =new Field(0,0,State.EMPTY);
 
 
     public Board iaShoot(Board board) {
         this.board=board;
+
         Random random = new Random();
         int randomX=-1, randomY=-1;
-        Field fieldNearShot;
+
 
         if (lastField.getState()==State.EMPTY || lastField.getState()==State.SUNK){
+
            boolean shootIntoEmpty=true;
-            do {
+
+           do {
                 randomX = random.nextInt(board.BOARD_SIZE);
                 randomY = random.nextInt(board.BOARD_SIZE);
                 if(this.board.getField(randomX,randomY).getState()==State.SHIP ||this.board.getField(randomX,randomY).getState()==State.EMPTY){
                     shootIntoEmpty=false;
                 }
            }while(shootIntoEmpty);
-            try {
+
+           try {
                 this.board.shoot(randomX,randomY);
             } catch (IllegalMoveException e) {
                 System.out.println(e.getMessage());
             }
+
             if (this.board.getField(randomX,randomY).getState()==State.SUNK){
                 this.board=ifSunkPutMissAround(board,randomX,randomY);
             }
+
             if (this.board.getField(randomX,randomY).getState()==State.HIT){
                 lastField=board.getField(randomX,randomY);
             }
+
         }else if(lastField.getState()==State.HIT){
+
             Field nearShot = shootNear(this.board,lastField.getX(),lastField.getY());
 
             if (nearShot.getState()==State.HIT){
@@ -55,16 +61,21 @@ public class HardIA {
                 this.board=ifSunkPutMissAround(this.board,nearShot.getX(),nearShot.getY());
             }
         }
+
         return this.board;
     }
 
     public Field shootNear(Board board, int x, int y){
         this.board=board;
 
+
+        /*shoot if we hit ship first time but not sunk */
         if(firstDeckHit(x,y)){
+
             Random random = new Random();
             boolean stop=true;
             int randomX,randomY;
+
             do {
                 randomX=x;randomY=y;
                 if(random.nextInt(2)==0){
@@ -87,10 +98,11 @@ public class HardIA {
                 }
 
             }while (stop);
+
             return this.board.getField(randomX,randomY);
         }
 
-
+        /*shoot near if we hits ship more than 1*/
         if((!board.isOutside(x-1,y)&&this.board.getField(x-1,y).getState()==State.HIT)||(!board.isOutside(x+1,y)&& this.board.getField(x+1,y).getState()==State.HIT)) {
             return shootVertical(x, y);
         }else if((!board.isOutside(x,y-1)&&this.board.getField(x,y-1).getState()==State.HIT) || (!board.isOutside(x,y+1)&&this.board.getField(x,y+1).getState()==State.HIT)){
@@ -114,21 +126,21 @@ public class HardIA {
         }
 
         if(listCordynate>0 && listCordynate<listOfFields.size()-1 && (listOfFields.get(listCordynate-1).getState()==State.HIT || listOfFields.get(listCordynate+1).getState()==State.HIT) ){
-            shootOrNot= shootIfPossibleVertical(1,listCordynate, listOfFields);
+            shootOrNot= shootIfPossible(1,listCordynate, listOfFields);
             if(shootOrNot!=null){
                 return shootOrNot;
             }
-            shootOrNot= shootIfPossibleVertical(-1, listCordynate, listOfFields);
+            shootOrNot= shootIfPossible(-1, listCordynate, listOfFields);
             if(shootOrNot!=null){
                 return shootOrNot;
             }
         }else if (listCordynate==0){
-            shootOrNot= shootIfPossibleVertical(1, listCordynate, listOfFields);
+            shootOrNot= shootIfPossible(1, listCordynate, listOfFields);
             if(shootOrNot!=null){
                 return shootOrNot;
             }
         }else if (listCordynate == listOfFields.size()-1){
-            shootOrNot= shootIfPossibleVertical(-1, listCordynate, listOfFields);
+            shootOrNot= shootIfPossible(-1, listCordynate, listOfFields);
             if(shootOrNot!=null){
                 return shootOrNot;
             }
@@ -151,22 +163,22 @@ public class HardIA {
         }
 
         if(listCordynate>0 && listCordynate<listOfFields.size()-1 && (listOfFields.get(listCordynate-1).getState()==State.HIT || listOfFields.get(listCordynate+1).getState()==State.HIT) ){
-            shootOrNot= shootIfPossibleVertical(1, listCordynate, listOfFields);
+            shootOrNot= shootIfPossible(1, listCordynate, listOfFields);
             if(shootOrNot!=null){
                 return shootOrNot;
             }
-            shootOrNot= shootIfPossibleVertical(-1, listCordynate, listOfFields);
+            shootOrNot= shootIfPossible(-1, listCordynate, listOfFields);
             if(shootOrNot!=null){
                 return shootOrNot;
             }
         }else if (listCordynate==0){
 
-            shootOrNot= shootIfPossibleVertical(1, listCordynate, listOfFields);
+            shootOrNot= shootIfPossible(1, listCordynate, listOfFields);
             if(shootOrNot!=null){
                 return shootOrNot;
             }
         }else if (listCordynate == listOfFields.size()-1){
-            shootOrNot= shootIfPossibleVertical(-1, listCordynate, listOfFields);
+            shootOrNot= shootIfPossible(-1, listCordynate, listOfFields);
             if(shootOrNot!=null){
                 return shootOrNot;
             }
@@ -174,7 +186,7 @@ public class HardIA {
         return null;
     }
 
-    private Field shootIfPossibleVertical(int plusMinus, int listCoordinate, List<Field> listOfFields ){
+    private Field shootIfPossible(int plusMinus, int listCoordinate, List<Field> listOfFields ){
         int count = listCoordinate+plusMinus;
         boolean stop=true;
         do{

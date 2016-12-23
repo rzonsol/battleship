@@ -45,6 +45,18 @@ public class Board {
         }
     }
 
+    public void userShipsToNormal(){
+        for (int x = 0; x < BOARD_SIZE; x++) {
+            for (int y = 0; y < BOARD_SIZE; y++) {
+                if(getField(x,y).getState()==State.USER_SHIP){
+                    fields[x][y].setState(State.SHIP);
+                }
+            }
+
+        }
+
+    }
+
     /**
      * getShip() - return ship depends on number of decks and orientation (horizontal/vertical)
     */
@@ -88,7 +100,6 @@ public class Board {
                         addShip(x,y,ship);
                         tryAgain=false;
                     } catch (IllegalMoveException illegalMoveExeption) {
-                        illegalMoveExeption.printStackTrace();
                         tryAgain=true;
                     }
 
@@ -98,7 +109,7 @@ public class Board {
     }
 
     /**
-     * printBoard() - printing board with ships on it. If it is computer board the ships are hidden.
+     * printUserBoard() - printing board with ships on it. If it is computer board the ships are hidden.
      */
     public void printBord(){
         System.out.print("  |");
@@ -221,7 +232,7 @@ public class Board {
     /**
      * getTotalCountOfShips returns number of ships on board
      */
-    private int getTotalCountOfShips(int decksCount) {
+    public int getTotalCountOfShips(int decksCount) {
         return SHIPS_TYPE_COUNT - decksCount+1;
     }
 

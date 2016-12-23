@@ -28,7 +28,7 @@ public class MediumIATest {
         //arrange
         MediumIA iaLavel =new MediumIA();
         //act
-        assertNotNull(iaLavel.IaShoot(board));
+        assertNotNull(iaLavel.iaShoot(board));
     }
 
     @Test

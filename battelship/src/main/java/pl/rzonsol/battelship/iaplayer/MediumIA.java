@@ -10,20 +10,21 @@ import java.util.Random;
 /**
  * Created by rzonsol on 09.12.2016.
  */
-public class MediumIA {
+public class MediumIA extends Ia{
 
     private Boolean hitNotSunk=false;
     private static Field field =new Field(0,0,State.EMPTY);
 
-
-    public Board IaShoot(Board board) {
+    public Board iaShoot(Board board) {
         Random random = new Random();
+        Field shoot=null;
         int randomX = random.nextInt(board.BOARD_SIZE);
         int randomY = random.nextInt(board.BOARD_SIZE);
         Field fieldNearShot;
 
         if (field.getState()==State.HIT){
             fieldNearShot=shootNear(board,field.getX(),field.getY());
+            shoot = fieldNearShot;
             if (fieldNearShot.getState()==State.HIT || fieldNearShot.getState()==State.SUNK){
                 field=fieldNearShot;
             }
@@ -31,15 +32,19 @@ public class MediumIA {
             try {
                 board.shoot(randomX,randomY);
                 field=board.getField(randomX,randomY);
+                shoot = field;
             } catch (IllegalMoveException e) {
                 System.out.println(e.getMessage());
             }
 
         }
+        if(shoot!=null){System.out.println("New shoot at "+(char)('A'+shoot.getY()) + shoot.getX());}
         return board;
     }
 
-
+    /**
+     * shoot near last hit not sunk ship
+     */
     protected Field shootNear(Board board,int x, int y){
         Random random = new Random();
         Boolean oneAgana =true;
@@ -63,15 +68,4 @@ public class MediumIA {
         return field;
     }
 
-
-
-
-
-    public Boolean getHitNotSunk() {
-        return hitNotSunk;
-    }
-
-    public void setHitNotSunk(Boolean hitNotSunk) {
-        this.hitNotSunk = hitNotSunk;
-    }
 }
